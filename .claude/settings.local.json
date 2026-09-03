@@ -23,7 +23,13 @@
       "Bash(cp \"C:\\\\Users\\\\bagas\\\\Downloads\\\\logonih-extracted\\\\logonih\\\\download1.webp\" \"C:\\\\Users\\\\bagas\\\\Downloads\\\\kumpultwibbon\\\\public\\\\logo-ump.webp\")",
       "Bash(cp /c/Users/bagas/Downloads/logonih-extracted/logonih/download.webp /c/Users/bagas/Downloads/kumpultwibbon/public/logo-hmti.webp)",
       "Bash(cp /c/Users/bagas/Downloads/logonih-extracted/logonih/download1.webp /c/Users/bagas/Downloads/kumpultwibbon/public/logo-ump.webp)",
-      "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'feat: add real HMTI & UMP logos + bazzcreate badge *)"
+      "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'feat: add real HMTI & UMP logos + bazzcreate badge *)",
+      "Bash(git -c user.email=\"kumpultwibbon@local\" -c user.name=\"panitia\" commit -m \"feat: add bazzcreate badge to footer\")",
+      "Bash(cat)",
+      "Read(//tmp/**)",
+      "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'style: simplify Created by bazzcreate badge *)",
+      "Bash(cp \"C:\\\\Users\\\\bagas\\\\Downloads\\\\logonih-extracted\\\\logonih\\\\download.webp\" \"C:\\\\Users\\\\bagas\\\\Downloads\\\\kumpultwibbon\\\\public\\\\favicon.webp\" 2>&1 && rm \"C:\\\\Users\\\\bagas\\\\Downloads\\\\kumpultwibbon\\\\public\\\\favicon.svg\" && ls \"C:\\\\Users\\\\bagas\\\\Downloads\\\\kumpultwibbon\\\\public\\\\\")",
+      "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'fix: HIMTI typo + remove blue nav hover + HMTI favicon *)"
     ]
   }
 }

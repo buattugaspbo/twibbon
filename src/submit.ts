@@ -29,7 +29,7 @@ function showJoinGrupPopup(): void {
 const IG_URL_REGEX =
   /^https:\/\/(www\.)?instagram\.com\/(p|reel|reels)\/[A-Za-z0-9_-]+/;
 const NIM_REGEX = /^162026\d{3}$/;
-const MAX_FILE_SIZE = 5 * 1024 * 1024;
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 
 const form = document.querySelector<HTMLFormElement>('#submit-form')!;
@@ -130,7 +130,7 @@ form.addEventListener('submit', async e => {
     setFieldError(fileInput, 'Screenshot wajib di-upload.');
     ok = false;
   } else if (file.size > MAX_FILE_SIZE) {
-    setFieldError(fileInput, 'Ukuran file maksimal 5 MB.');
+    setFieldError(fileInput, 'Ukuran file maksimal 10 MB.');
     ok = false;
   } else if (!ALLOWED_TYPES.includes(file.type)) {
     setFieldError(fileInput, 'Format harus JPG, PNG, atau WebP.');

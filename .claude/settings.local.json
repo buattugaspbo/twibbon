@@ -30,7 +30,9 @@
       "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'style: simplify Created by bazzcreate badge *)",
       "Bash(cp \"C:\\\\Users\\\\bagas\\\\Downloads\\\\logonih-extracted\\\\logonih\\\\download.webp\" \"C:\\\\Users\\\\bagas\\\\Downloads\\\\kumpultwibbon\\\\public\\\\favicon.webp\" 2>&1 && rm \"C:\\\\Users\\\\bagas\\\\Downloads\\\\kumpultwibbon\\\\public\\\\favicon.svg\" && ls \"C:\\\\Users\\\\bagas\\\\Downloads\\\\kumpultwibbon\\\\public\\\\\")",
       "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'fix: HIMTI typo + remove blue nav hover + HMTI favicon *)",
-      "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'feat: add real HMTI & UMP logos + replace PT placeholder *)"
+      "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'feat: add real HMTI & UMP logos + replace PT placeholder *)",
+      "Bash(git -c user.email=\"kumpultwibbon@local\" -c user.name=\"panitia\" commit -m \"fix: admin navbar logo layout\")",
+      "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'fix: admin navbar - simplify logo layout *)"
     ]
   }
 }

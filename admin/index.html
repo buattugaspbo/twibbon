@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin – PKKMB TI UMP</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  </head>
+  <body class="font-sans bg-surface">
+    <header class="bg-white border-b border-gray-200">
+      <div class="max-w-6xl mx-auto h-14 flex items-center justify-between px-4">
+        <div class="flex items-center gap-2">
+          <a href="/" class="font-display font-bold flex items-center gap-2">
+            <span class="w-7 h-7 rounded-lg bg-ink flex items-center justify-center text-white text-xs font-bold">A</span>
+            Admin PKKMB TI UMP
+          </a>
+          <img src="/logo-hmti.png" alt="" class="hidden sm:block w-7 h-7 object-contain" onerror="this.style.display='none'" />
+          <img src="/logo-ump.png" alt="" class="hidden sm:block w-7 h-7 object-contain" onerror="this.style.display='none'" />
+        </div>
+        <div class="flex items-center gap-3">
+          <span id="admin-email" class="hidden sm:inline text-xs text-gray-500"></span>
+          <button id="logout-btn" class="hidden text-sm text-red-500 hover:underline">Logout</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="auth-gate" class="max-w-md mx-auto px-4 py-16">
+      <h1 class="font-display text-2xl font-bold mb-2">Login Admin</h1>
+      <p class="text-gray-600 mb-6 text-sm">Masukkan email admin. Link login akan dikirim via email (magic link).</p>
+      <form id="login-form" class="space-y-4 bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
+        <div>
+          <label for="login-email" class="block font-medium mb-1">Email Admin</label>
+          <input type="email" id="login-email" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:border-ti-cyan focus:ring-2 focus:ring-ti-cyan/20 outline-none" placeholder="admin@ump.ac.id" />
+        </div>
+        <button type="submit" class="btn-primary w-full">Kirim Link Login</button>
+      </form>
+    </main>
+
+    <main id="dashboard" class="hidden max-w-6xl mx-auto px-4 py-8">
+      <div class="flex flex-wrap gap-2 mb-6">
+        <button data-tab="pending" class="tab-btn px-4 py-2 rounded-lg font-medium bg-ump-yellow text-ink">Pending</button>
+        <button data-tab="approved" class="tab-btn px-4 py-2 rounded-lg font-medium bg-white text-gray-700">Approved</button>
+        <button data-tab="rejected" class="tab-btn px-4 py-2 rounded-lg font-medium bg-white text-gray-700">Rejected</button>
+        <button data-tab="members" class="tab-btn px-4 py-2 rounded-lg font-medium bg-white text-gray-700">Anggota</button>
+        <button data-tab="history" class="tab-btn px-4 py-2 rounded-lg font-medium bg-white text-gray-700">History</button>
+        <button data-tab="files" class="tab-btn px-4 py-2 rounded-lg font-medium bg-white text-gray-700">Files</button>
+        <button data-tab="settings" class="tab-btn px-4 py-2 rounded-lg font-medium bg-white text-gray-700">Settings</button>
+        <button data-tab="terms" class="tab-btn px-4 py-2 rounded-lg font-medium bg-white text-gray-700">S&K</button>
+      </div>
+
+      <section data-panel="pending">
+        <h2 class="font-display text-xl font-bold mb-3">Submission Pending</h2>
+        <div id="pending-list" class="space-y-3"></div>
+      </section>
+
+      <section data-panel="approved" class="hidden">
+        <h2 class="font-display text-xl font-bold mb-3">Submission Approved</h2>
+        <div id="approved-list" class="space-y-3"></div>
+      </section>
+
+      <section data-panel="rejected" class="hidden">
+        <h2 class="font-display text-xl font-bold mb-3">Submission Rejected</h2>
+        <div id="rejected-list" class="space-y-3"></div>
+      </section>
+
+      <section data-panel="members" class="hidden">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="font-display text-xl font-bold">Daftar Anggota</h2>
+          <button id="add-member-btn" class="btn-primary text-sm">+ Tambah</button>
+        </div>
+        <p class="text-xs text-gray-500 mb-3">Edit/add/hapus anggota. Semua perubahan tercatat di tab History.</p>
+        <div id="members-list" class="space-y-2"></div>
+      </section>
+
+      <section data-panel="history" class="hidden">
+        <h2 class="font-display text-xl font-bold mb-3">History Perubahan Anggota</h2>
+        <p class="text-xs text-gray-500 mb-3">Audit log — siapa ngubah apa, kapan. 100 entri terbaru.</p>
+        <div id="history-list" class="space-y-2"></div>
+      </section>
+
+      <section data-panel="files" class="hidden">
+        <h2 class="font-display text-xl font-bold mb-3">Files (Bingkai & Video)</h2>
+        <form id="file-upload-form" class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 mb-6 space-y-3">
+          <div class="grid sm:grid-cols-3 gap-3">
+            <input type="text" id="file-title" required placeholder="Judul file" class="border border-gray-300 rounded-lg px-3 py-2" />
+            <select id="file-kind" required class="border border-gray-300 rounded-lg px-3 py-2">
+              <option value="frame">Bingkai Twibbon</option>
+              <option value="video">Video Intro</option>
+            </select>
+            <input type="file" id="file-input" required class="border border-gray-300 rounded-lg px-3 py-2 text-sm" />
+          </div>
+          <button type="submit" class="btn-primary">Upload</button>
+        </form>
+        <div id="files-list" class="space-y-3"></div>
+      </section>
+
+      <section data-panel="settings" class="hidden">
+        <h2 class="font-display text-xl font-bold mb-3">Settings</h2>
+        <form id="settings-form" class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 space-y-4">
+          <div>
+            <label for="setting-event-title" class="block font-medium mb-1">Judul Event</label>
+            <input type="text" id="setting-event-title" class="w-full border border-gray-300 rounded-lg px-3 py-2" />
+          </div>
+          <div>
+            <label for="setting-event-subtitle" class="block font-medium mb-1">Subtitle Event</label>
+            <input type="text" id="setting-event-subtitle" class="w-full border border-gray-300 rounded-lg px-3 py-2" />
+          </div>
+          <div>
+            <label for="setting-target-count" class="block font-medium mb-1">Target Peserta</label>
+            <input type="number" id="setting-target-count" min="1" class="w-full border border-gray-300 rounded-lg px-3 py-2" />
+          </div>
+          <div>
+            <label for="setting-video-url" class="block font-medium mb-1">URL Video Intro (kosongkan untuk sembunyikan section)</label>
+            <input type="url" id="setting-video-url" placeholder="https://...mp4" class="w-full border border-gray-300 rounded-lg px-3 py-2" />
+          </div>
+          <div class="border-t border-gray-200 pt-4">
+            <h3 class="font-medium mb-3">Deadline</h3>
+            <div class="grid sm:grid-cols-2 gap-3">
+              <div>
+                <label for="setting-deadline-label" class="block text-sm font-medium mb-1">Label Deadline</label>
+                <input type="text" id="setting-deadline-label" placeholder="Batas submit..." class="w-full border border-gray-300 rounded-lg px-3 py-2" />
+              </div>
+              <div>
+                <label for="setting-deadline-at" class="block text-sm font-medium mb-1">Waktu Deadline</label>
+                <input type="datetime-local" id="setting-deadline-at" class="w-full border border-gray-300 rounded-lg px-3 py-2" />
+              </div>
+            </div>
+            <button type="button" id="clear-deadline-btn" class="text-xs text-red-500 hover:underline mt-2">Hapus deadline</button>
+          </div>
+          <button type="submit" class="btn-primary">Simpan Semua Settings</button>
+        </form>
+      </section>
+
+      <section data-panel="terms" class="hidden">
+        <h2 class="font-display text-xl font-bold mb-3">Syarat & Ketentuan (Markdown)</h2>
+        <form id="terms-form" class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 space-y-3">
+          <textarea id="terms-textarea" rows="14" class="w-full border border-gray-300 rounded-lg px-3 py-2 font-mono text-sm"></textarea>
+          <div>
+            <p class="text-xs text-gray-500 mb-1">Preview:</p>
+            <div id="terms-preview" class="markdown border border-gray-200 rounded-lg p-4 bg-gray-50"></div>
+          </div>
+          <button type="submit" class="btn-primary">Simpan</button>
+        </form>
+      </section>
+    </main>
+
+    <!-- Modal for add/edit member -->
+    <div id="member-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+      <div class="modal-card max-w-lg">
+        <h3 id="member-modal-title" class="font-display text-lg font-bold mb-4">Tambah Anggota</h3>
+        <form id="member-form" class="space-y-3">
+          <input type="hidden" id="member-id" />
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label for="member-position" class="block text-sm font-medium mb-1">Posisi</label>
+              <input type="number" id="member-position" class="w-full border border-gray-300 rounded-lg px-3 py-2" />
+            </div>
+            <div>
+              <label for="member-group" class="block text-sm font-medium mb-1">Kelompok</label>
+              <input type="number" id="member-group" min="1" class="w-full border border-gray-300 rounded-lg px-3 py-2" />
+            </div>
+          </div>
+          <div>
+            <label for="member-nim" class="block text-sm font-medium mb-1">NIM</label>
+            <input type="text" id="member-nim" placeholder="8–10 digit angka (atau kosongkan dulu)" class="w-full border border-gray-300 rounded-lg px-3 py-2" />
+          </div>
+          <div>
+            <label for="member-name" class="block text-sm font-medium mb-1">Nama Lengkap *</label>
+            <input type="text" id="member-name" required class="w-full border border-gray-300 rounded-lg px-3 py-2" />
+          </div>
+          <div>
+            <label for="member-note" class="block text-sm font-medium mb-1">Catatan (opsional, misal: alasan perubahan)</label>
+            <textarea id="member-note" rows="2" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"></textarea>
+          </div>
+          <div class="flex justify-end gap-2 pt-2">
+            <button type="button" id="member-cancel" class="px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-50">Batal</button>
+            <button type="submit" class="btn-primary">Simpan</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script type="module" src="/src/admin.ts"></script>
+  </body>
+</html>

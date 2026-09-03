@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  body { @apply bg-surface text-ink antialiased; }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full font-semibold bg-ump-yellow text-ink hover:bg-ump-yellow-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full font-semibold border-2 border-ti-cyan text-ti-cyan hover:bg-ti-cyan hover:text-white transition-colors;
+  }
+  .ig-gradient {
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  }
+  .ump-gradient {
+    background: linear-gradient(135deg, #F5C518 0%, #0EA5E9 100%);
+  }
+  .tile {
+    @apply relative overflow-hidden cursor-pointer;
+    aspect-ratio: 1 / 1;
+    background: #f3f4f6;
+  }
+  .tile img {
+    @apply w-full h-full object-cover transition-transform duration-300;
+  }
+  .tile:hover img {
+    transform: scale(1.03);
+    filter: brightness(0.75);
+  }
+  .tile .overlay {
+    @apply absolute inset-0 flex flex-col justify-between p-3 opacity-0 transition-opacity duration-200;
+    color: white;
+  }
+  .tile:hover .overlay { @apply opacity-100; }
+  .tile .overlay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(transparent 50%, rgba(0, 0, 0, 0.4));
+    pointer-events: none;
+  }
+  .markdown { @apply text-gray-700 leading-relaxed; }
+  .markdown h1 { @apply text-2xl font-bold mt-6 mb-3; }
+  .markdown h2 { @apply text-xl font-bold mt-5 mb-2; }
+  .markdown h3 { @apply text-lg font-semibold mt-4 mb-2; }
+  .markdown p { @apply mb-3; }
+  .markdown ol { @apply list-decimal pl-6 mb-3; }
+  .markdown ul { @apply list-disc pl-6 mb-3; }
+  .markdown li { @apply mb-1; }
+  .markdown a { @apply text-ti-cyan hover:underline; }
+  .markdown strong { @apply font-semibold; }
+  .markdown code { @apply bg-gray-100 px-1 rounded text-sm; }
+  .field-error:empty { @apply hidden; }
+  .field-error { @apply text-red-500 text-sm mt-1; }
+  .skeleton { @apply animate-pulse bg-gray-200 rounded; }
+  .toast-stack {
+    @apply fixed top-20 right-4 z-50 flex flex-col gap-2 max-w-sm;
+  }
+  .honeypot {
+    position: absolute !important;
+    left: -9999px !important;
+    width: 1px !important;
+    height: 1px !important;
+    opacity: 0 !important;
+  }
+
+  /* Identity modal backdrop */
+  .modal-backdrop {
+    @apply fixed inset-0 z-50 flex items-center justify-center p-4;
+    background: rgba(15, 23, 42, 0.55);
+    backdrop-filter: blur(4px);
+  }
+  .modal-card {
+    @apply bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 md:p-8;
+    animation: modalIn 0.18s ease-out;
+  }
+  @keyframes modalIn {
+    from { opacity: 0; transform: translateY(8px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* Deadline countdown card */
+  .deadline-card {
+    @apply rounded-2xl border-2 border-ump-yellow bg-white shadow-sm p-5 md:p-6;
+  }
+  .deadline-card.expired {
+    @apply border-red-300 bg-red-50;
+  }
+  .countdown-pill {
+    @apply inline-flex items-baseline gap-1 px-3 py-2 rounded-lg bg-ink text-white font-mono;
+  }
+
+  /* Member card */
+  .member-card {
+    @apply bg-white rounded-xl border border-gray-200 p-3 flex items-center gap-3 hover:shadow-md transition-shadow;
+  }
+  .member-num {
+    @apply w-8 h-8 rounded-full ump-gradient text-white text-xs font-bold flex items-center justify-center flex-shrink-0;
+  }
+  .member-nim {
+    @apply font-mono text-xs text-gray-500;
+  }
+}

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Submit Twibbon – PKKMB TI UMP</title>
+    <meta name="description" content="Submit twibbon kamu untuk PKKMB TI UMP 2026." />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  </head>
+  <body class="font-sans">
+    <header class="bg-white border-b border-gray-200">
+      <div class="max-w-ig mx-auto h-14 flex items-center justify-between px-4">
+        <a href="/" class="font-display font-bold flex items-center gap-2">
+          <span class="w-7 h-7 rounded-lg ump-gradient flex items-center justify-center text-white text-xs font-bold">PT</span>
+          PKKMB TI UMP
+        </a>
+        <a href="/" class="text-sm text-gray-600 hover:text-ti-cyan">← Kembali</a>
+      </div>
+    </header>
+
+    <main class="max-w-xl mx-auto px-4 py-10">
+      <h1 class="font-display text-3xl font-bold mb-2">Submit Twibbon</h1>
+      <p class="text-gray-600 mb-6">Pastikan twibbon kamu sudah di-post ke IG & sesuai <a href="/#terms" class="text-ti-cyan hover:underline" target="_blank">S&K</a>.</p>
+
+      <div id="identity-banner" class="hidden mb-4 p-3 rounded-lg bg-ump-yellow/10 border border-ump-yellow/30 text-sm flex items-center justify-between gap-3">
+        <span>Submit sebagai <strong id="identity-banner-name"></strong> (<span id="identity-banner-nim" class="font-mono"></span>)</span>
+        <a href="/" class="text-ti-cyan hover:underline text-xs">Salah identitas?</a>
+      </div>
+
+      <form id="submit-form" class="space-y-5 bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-200" novalidate>
+        <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" class="honeypot" aria-hidden="true" />
+
+        <div>
+          <label for="ig-url" class="block font-medium mb-1">Link Postingan Instagram</label>
+          <input type="url" id="ig-url" name="ig_url" required placeholder="https://www.instagram.com/p/..." class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:border-ti-cyan focus:ring-2 focus:ring-ti-cyan/20 outline-none" />
+          <p class="field-error"></p>
+          <p class="text-xs text-gray-500 mt-1">Dari post atau reel IG kamu yang memuat twibbon.</p>
+        </div>
+
+        <div>
+          <label class="block font-medium mb-1">Screenshot Twibbon</label>
+          <div id="drop-zone" class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-ti-cyan transition-colors">
+            <input type="file" id="screenshot" name="screenshot" accept="image/jpeg,image/png,image/webp" required class="hidden" />
+            <img id="file-preview" class="hidden max-h-48 mx-auto rounded mb-2" alt="" />
+            <p id="file-label" class="text-gray-500 text-sm">Klik atau drop file di sini<br/>(JPG/PNG/WebP, maks 5 MB)</p>
+          </div>
+          <p class="field-error"></p>
+        </div>
+
+        <div>
+          <label class="flex items-start gap-2 cursor-pointer">
+            <input type="checkbox" id="agree" required class="mt-1" />
+            <span class="text-sm">Saya sudah membaca dan menyetujui <a href="/#terms" class="text-ti-cyan hover:underline" target="_blank">Syarat & Ketentuan</a>, dan twibbon yang saya submit adalah hasil karya saya sendiri.</span>
+          </label>
+          <p class="field-error"></p>
+        </div>
+
+        <button id="submit-btn" type="submit" class="btn-primary w-full text-base">Submit Twibbon</button>
+      </form>
+    </main>
+
+    <script type="module" src="/src/submit.ts"></script>
+  </body>
+</html>

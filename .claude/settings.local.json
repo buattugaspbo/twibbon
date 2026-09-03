@@ -36,7 +36,9 @@
       "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'refactor: remove identity modal + move name/NIM input to submit form *)",
       "Bash(unzip -l bahantwib.zip)",
       "Bash(unzip -o bahantwib.zip)",
-      "Bash(cp \"C:\\\\Users\\\\bagas\\\\Downloads\\\\bahantwib/FRAME VIDEO IT_20260827_133925_0000.png\" \"C:\\\\Users\\\\bagas\\\\Downloads\\\\kumpultwibbon\\\\public\\\\frame-video-intro.png\" && ls -lh \"C:\\\\Users\\\\bagas\\\\Downloads\\\\kumpultwibbon\\\\public\\\\\")"
+      "Bash(cp \"C:\\\\Users\\\\bagas\\\\Downloads\\\\bahantwib/FRAME VIDEO IT_20260827_133925_0000.png\" \"C:\\\\Users\\\\bagas\\\\Downloads\\\\kumpultwibbon\\\\public\\\\frame-video-intro.png\" && ls -lh \"C:\\\\Users\\\\bagas\\\\Downloads\\\\kumpultwibbon\\\\public\\\\\")",
+      "Bash(git -c user.email=\"kumpultwibbon@local\" -c user.name=\"panitia\" commit -m \"fix: migration changed_by_kind enum \\(migration → system\\)\")",
+      "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'feat: upgrade setup final - email/password login + 6 anggota kelompok + konten lengkap *)"
     ]
   }
 }

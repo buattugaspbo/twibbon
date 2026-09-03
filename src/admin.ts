@@ -13,6 +13,7 @@ const authGate = document.querySelector<HTMLElement>('#auth-gate')!;
 const dashboard = document.querySelector<HTMLElement>('#dashboard')!;
 const loginForm = document.querySelector<HTMLFormElement>('#login-form')!;
 const loginEmail = document.querySelector<HTMLInputElement>('#login-email')!;
+const loginPassword = document.querySelector<HTMLInputElement>('#login-password')!
 const logoutBtn = document.querySelector<HTMLButtonElement>('#logout-btn')!;
 const adminEmailEl = document.querySelector<HTMLElement>('#admin-email')!;
 const tabBtns = document.querySelectorAll<HTMLButtonElement>('.tab-btn');
@@ -75,18 +76,13 @@ tabBtns.forEach(b => b.addEventListener('click', () => switchTab(b.dataset.tab!)
 loginForm.addEventListener('submit', async e => {
   e.preventDefault();
   const email = loginEmail.value.trim();
-  if (!email) return;
-  const { error } = await supabase.auth.signInWithOtp({
-    email,
-    options: {
-      emailRedirectTo: window.location.origin + '/admin/',
-      shouldCreateUser: false,
-    },
-  });
+  const password = loginPassword.value;
+  if (!email || !password) return;
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) {
-    toast(error.message, 'error', 6000);
+    toast('Email atau password salah.', 'error', 6000);
   } else {
-    toast('Cek email kamu untuk link login.', 'success', 8000);
+    showDashboard();
   }
 });
 

@@ -28,6 +28,8 @@ function showJoinGrupPopup(): void {
 
 const IG_URL_REGEX =
   /^https:\/\/(www\.)?instagram\.com\/(p|reel|reels)\/[A-Za-z0-9_-]+/;
+const TIKTOK_URL_REGEX =
+  /^https:\/\/(www\.|vm\.)?tiktok\.com\/@?[\w.-]+\/video\/\d+/;
 const NIM_REGEX = /^162026\d{3}$/;
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
@@ -119,8 +121,8 @@ form.addEventListener('submit', async e => {
     setFieldError(nimInput, null);
   }
 
-  if (!IG_URL_REGEX.test(igVal)) {
-    setFieldError(igInput, 'Link harus URL Instagram post/reel yang valid.');
+  if (!IG_URL_REGEX.test(igVal) && !TIKTOK_URL_REGEX.test(igVal)) {
+    setFieldError(igInput, 'Link harus URL Instagram post/reel atau TikTok video yang valid.');
     ok = false;
   } else {
     setFieldError(igInput, null);

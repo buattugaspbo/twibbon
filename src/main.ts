@@ -308,8 +308,159 @@ function showMemberEditModal(memberId: string, allMembers: TwibbonMember[]): voi
     }
     toast('Anggota berhasil diperbarui!', 'success');
     modal.remove();
-    loadMembers(); // Reload
+    loadMembers();
   });
+}
+
+// Render Twibbon Section
+function renderTwibbonSection(): void {
+  const deadlineAt = settingsCache.deadline_at;
+  const deadlineText = document.getElementById('twibbon-deadline-text');
+  const deadlineAbsolute = document.getElementById('twibbon-deadline-absolute');
+  const countdown = document.getElementById('twibbon-countdown');
+
+  if (!deadlineText || !deadlineAbsolute || !countdown) return;
+
+  if (!deadlineAt || deadlineAt === 'null') {
+    deadlineText.textContent = 'Belum ditetapkan';
+    deadlineAbsolute.textContent = '';
+    countdown.innerHTML = '<span class="text-sm text-gray-400">— : — : — : —</span>';
+  } else {
+    const target = new Date(String(deadlineAt));
+    deadlineAbsolute.textContent = target.toLocaleString('id-ID', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+    const update = () => {
+      const c = getCountdown(String(deadlineAt));
+      if (!c) return;
+      if (c.isExpired) {
+        deadlineText.textContent = 'Sudah lewat';
+        countdown.innerHTML = '<span class="text-sm font-semibold text-red-600">Lewat</span>';
+      } else {
+        deadlineText.textContent = `Sisa ${formatCountdown(c)}`;
+        const spans = countdown.querySelectorAll<HTMLElement>('[data-cd]');
+        spans.forEach(s => {
+          const key = s.dataset.cd as 'days' | 'hours' | 'minutes' | 'seconds';
+          s.textContent = String(c[key]).padStart(2, '0');
+        });
+      }
+    };
+    update();
+    setInterval(update, 1000);
+  }
+  loadTwibbonMaterials();
+  loadTwibbonRequirements();
+}
+
+async function loadTwibbonMaterials(): Promise<void> {
+  const container = document.getElementById('twibbon-materials');
+  if (!container) return;
+  const { data } = await supabase
+    .from('twibbon_files')
+    .select('*')
+    .eq('file_kind', 'frame')
+    .order('sort_order', { ascending: true });
+
+  if (!data || data.length === 0) {
+    container.innerHTML = '<p class="text-gray-500 text-sm">Belum ada bahan twibbon.</p>';
+    return;
+  }
+
+  container.innerHTML = data
+    .map(f => {
+      const isLink = f.storage_path.startsWith('http');
+      const url = isLink ? f.storage_path : publicUrl(f.storage_path);
+      return `
+        <a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:border-ti-cyan hover:bg-ti-cyan/5 transition-colors">
+          <span class="text-2xl">${isLink ? '🔗' : '🖼️'}</span>
+          <div class="flex-1 min-w-0">
+            <p class="font-semibold text-sm truncate">${escapeHtml(f.title)}</p>
+            <p class="text-xs text-gray-500">${isLink ? 'Link Eksternal' : 'Download'}</p>
+          </div>
+        </a>
+      `;
+    })
+    .join('');
+}
+
+function loadTwibbonRequirements(): void {
+  const container = document.getElementById('twibbon-requirements');
+  if (!container) return;
+  const reqMd = `### Template Caption:
+\`\`\`
+✨ [𝐏𝐊𝐊𝐌𝐁 𝐈𝐓 𝟐𝟔] ✨
+Halo semuanya! 👋🏻
+Perkenalkan, saya [Nama Lengkap], biasa dipanggil [Nama Panggilan].
+#PKKMBUMPalembang #TeknologiInformasiUMP
+\`\`\`
+
+### Ketentuan:
+- Post twibbon di Instagram/TikTok
+- Mention 5 akun teman
+- Tag @teknologiump & @hmti_ump
+- Akun tidak boleh privat`;
+  container.innerHTML = String(marked.parse(reqMd));
+}
+
+// Render Video Section
+function renderVideoSection(): void {
+  const deadlineAt = settingsCache.deadline_video_at;
+  const deadlineText = document.getElementById('video-deadline-text');
+  const deadlineAbsolute = document.getElementById('video-deadline-absolute');
+  const countdown = document.getElementById('video-countdown');
+
+  if (!deadlineText || !deadlineAbsolute || !countdown) return;
+
+  if (!deadlineAt || deadlineAt === 'null') {
+    deadlineText.textContent = 'Akan diinfokan kemudian';
+    deadlineAbsolute.textContent = '';
+    countdown.innerHTML = '<span class="text-sm text-gray-400">— : — : — : —</span>';
+  } else {
+    const target = new Date(String(deadlineAt));
+    deadlineAbsolute.textContent = target.toLocaleString('id-ID', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+    const update = () => {
+      const c = getCountdown(String(deadlineAt));
+      if (!c) return;
+      if (c.isExpired) {
+        deadlineText.textContent = 'Sudah lewat';
+        countdown.innerHTML = '<span class="text-sm font-semibold text-red-600">Lewat</span>';
+      } else {
+        deadlineText.textContent = `Sisa ${formatCountdown(c)}`;
+        const spans = countdown.querySelectorAll<HTMLElement>('[data-cd]');
+        spans.forEach(s => {
+          const key = s.dataset.cd as 'days' | 'hours' | 'minutes' | 'seconds';
+          s.textContent = String(c[key]).padStart(2, '0');
+        });
+      }
+    };
+    update();
+    setInterval(update, 1000);
+  }
+  loadVideoRequirements();
+}
+
+function loadVideoRequirements(): void {
+  const container = document.getElementById('video-requirements');
+  if (!container) return;
+  const reqMd = String(settingsCache.video_requirements_md || `### Ketentuan Video:
+1. Tugas individu
+2. Durasi: 3-5 menit
+3. Pakaian formal (kemeja putih)
+4. Mention @hmti_ump & @teknologiump
+5. Hashtag: #UMPalembang #TeknologiInformasi`);
+  container.innerHTML = String(marked.parse(reqMd));
 }
 
 async function loadFeed(): Promise<void> {
@@ -427,6 +578,8 @@ async function main(): Promise<void> {
     loadMembers(),
   ]);
   renderDeadline();
+  renderTwibbonSection();
+  renderVideoSection();
   setupShareButtons();
   setupInfiniteScroll();
 }

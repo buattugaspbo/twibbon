@@ -49,8 +49,8 @@
       </div>
       <div id="mobile-menu" class="hidden md:hidden border-t border-gray-200 bg-white">
         <div class="px-4 py-2 flex flex-col text-gray-700">
-          <a href="#deadline" class="py-2 hover:bg-gray-50">Deadline</a>
-          <a href="#frames" class="py-2 hover:bg-gray-50">Bingkai</a>
+          <a href="#twibbon-section" class="py-2 hover:bg-gray-50">Twibbon</a>
+          <a href="#video-section" class="py-2 hover:bg-gray-50">Video</a>
           <a href="#members" class="py-2 hover:bg-gray-50">Anggota</a>
           <a href="#terms" class="py-2 hover:bg-gray-50">S&K</a>
           <a href="#feed" class="py-2 hover:bg-gray-50">Gallery</a>
@@ -104,17 +104,123 @@
       </div>
     </section>
 
+    <!-- SECTION TWIBBON -->
+    <section id="twibbon-section" class="py-12 md:py-16 bg-white">
+      <div class="max-w-ig mx-auto px-4">
+        <h2 class="font-display text-3xl md:text-4xl font-bold mb-6">📸 Twibbon PKKMB IT 2026</h2>
+
+        <!-- Deadline Twibbon -->
+        <div id="twibbon-deadline" class="deadline-card mb-8">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+              <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Batas Submit Twibbon</p>
+              <h3 class="font-display text-xl md:text-2xl font-bold mt-1" id="twibbon-deadline-text">Belum ditetapkan</h3>
+              <p class="text-sm text-gray-500 mt-1" id="twibbon-deadline-absolute"></p>
+            </div>
+            <div id="twibbon-countdown" class="flex items-center gap-2">
+              <span class="countdown-pill"><span data-cd="days">--</span><span class="text-xs opacity-70">h</span></span>
+              <span class="text-ink/40 font-bold">:</span>
+              <span class="countdown-pill"><span data-cd="hours">--</span><span class="text-xs opacity-70">j</span></span>
+              <span class="text-ink/40 font-bold">:</span>
+              <span class="countdown-pill"><span data-cd="minutes">--</span><span class="text-xs opacity-70">m</span></span>
+              <span class="text-ink/40 font-bold">:</span>
+              <span class="countdown-pill"><span data-cd="seconds">--</span><span class="text-xs opacity-70">d</span></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grid: Bahan (kiri) + Syarat (kanan) -->
+        <div class="grid md:grid-cols-2 gap-8 mb-8">
+          <!-- Bahan Twibbon -->
+          <div>
+            <h3 class="font-display text-xl font-bold mb-4">📦 Bahan</h3>
+            <div id="twibbon-materials" class="space-y-3">
+              <p class="text-gray-500 text-sm">Loading...</p>
+            </div>
+          </div>
+
+          <!-- Syarat Twibbon -->
+          <div>
+            <h3 class="font-display text-xl font-bold mb-4">✅ Syarat & Ketentuan</h3>
+            <div id="twibbon-requirements" class="markdown text-sm">
+              <p class="text-gray-500">Loading...</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-center">
+          <a href="/submit.html?task=twibbon" class="btn-primary text-base px-8 py-3">
+            Submit Twibbon Sekarang
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION VIDEO PERKENALAN -->
+    <section id="video-section" class="py-12 md:py-16">
+      <div class="max-w-ig mx-auto px-4">
+        <h2 class="font-display text-3xl md:text-4xl font-bold mb-6">🎥 Video Perkenalan</h2>
+
+        <!-- Deadline Video -->
+        <div id="video-deadline" class="deadline-card mb-8">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+              <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Batas Upload Video</p>
+              <h3 class="font-display text-xl md:text-2xl font-bold mt-1" id="video-deadline-text">Belum ditetapkan</h3>
+              <p class="text-sm text-gray-500 mt-1" id="video-deadline-absolute"></p>
+            </div>
+            <div id="video-countdown" class="flex items-center gap-2">
+              <span class="countdown-pill"><span data-cd="days">--</span><span class="text-xs opacity-70">h</span></span>
+              <span class="text-ink/40 font-bold">:</span>
+              <span class="countdown-pill"><span data-cd="hours">--</span><span class="text-xs opacity-70">j</span></span>
+              <span class="text-ink/40 font-bold">:</span>
+              <span class="countdown-pill"><span data-cd="minutes">--</span><span class="text-xs opacity-70">m</span></span>
+              <span class="text-ink/40 font-bold">:</span>
+              <span class="countdown-pill"><span data-cd="seconds">--</span><span class="text-xs opacity-70">d</span></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grid: Bahan (kiri) + Syarat (kanan) -->
+        <div class="grid md:grid-cols-2 gap-8 mb-8">
+          <!-- Bahan Video -->
+          <div>
+            <h3 class="font-display text-xl font-bold mb-4">📦 Bahan</h3>
+            <div id="video-materials" class="space-y-3">
+              <p class="text-gray-500 text-sm">Tidak ada bahan khusus. Gunakan HP/kamera kamu untuk rekam video perkenalan.</p>
+            </div>
+          </div>
+
+          <!-- Syarat Video -->
+          <div>
+            <h3 class="font-display text-xl font-bold mb-4">✅ Syarat & Ketentuan</h3>
+            <div id="video-requirements" class="markdown text-sm">
+              <p class="text-gray-500">Loading...</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-center">
+          <a href="/submit.html?task=video" class="btn-primary text-base px-8 py-3">
+            Upload Video Sekarang
+          </a>
+        </div>
+      </div>
+    </section>
+
     <section id="terms" class="py-12 md:py-16 bg-white">
       <div class="max-w-ig mx-auto px-4">
-        <h2 class="font-display text-2xl md:text-3xl font-bold mb-2">Syarat & Ketentuan</h2>
-        <p class="text-gray-500 text-sm mb-6">Baca dulu sebelum submit. Sekalian scroll, biar gak ada yang kelewat.</p>
+        <h2 class="font-display text-2xl md:text-3xl font-bold mb-2">Syarat & Ketentuan Umum</h2>
+        <p class="text-gray-500 text-sm mb-6">Berlaku untuk semua tugas PKKMB TI 2026.</p>
         <div id="terms-content" class="markdown">Memuat...</div>
       </div>
     </section>
 
-    <section id="frames" class="py-12 md:py-16">
+    <section id="frames" class="hidden py-12 md:py-16">
       <div class="max-w-ig mx-auto px-4">
-        <h2 class="font-display text-2xl md:text-3xl font-bold mb-2">Bahan Twibbon</h2>
+        <h2 class="font-display text-2xl md:text-3xl font-bold mb-2">Bahan Twibbon (Legacy)</h2>
         <p class="text-gray-600 mb-6">Download bingkai resmi, edit pakai foto kamu, post ke IG, submit ke sini.</p>
         <div id="frames-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           <p class="text-gray-500 italic col-span-full">Memuat...</p>

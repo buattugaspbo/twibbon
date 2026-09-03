@@ -197,7 +197,6 @@ async function loadMembers(): Promise<void> {
   const { data, error } = await supabase
     .from('twibbon_members')
     .select('*')
-    .order('group_number', { ascending: true })
     .order('position', { ascending: true });
   if (error) {
     list.innerHTML = `<p class="text-red-500">Error: ${escapeHtml(error.message)}</p>`;
@@ -207,21 +206,110 @@ async function loadMembers(): Promise<void> {
     list.innerHTML = '<p class="text-gray-500 italic col-span-full">Belum ada anggota terdaftar.</p>';
     return;
   }
-  list.innerHTML =
-    `<p class="text-sm text-gray-500 mb-3">${data.length} anggota terdaftar.</p>` +
-    data
-      .map(
-        (m: TwibbonMember) => `
-      <div class="member-card">
-        <div class="member-num">${m.group_number ?? '?'}</div>
-        <div class="flex-1 min-w-0">
-          <p class="font-semibold text-sm truncate" title="${escapeHtml(m.name)}">${escapeHtml(m.name)}</p>
-          <p class="member-nim">Kelompok ${m.group_number ?? '?'}${m.nim ? ` · ${escapeHtml(m.nim)}` : ''}</p>
+
+  // Group by kelompok (6 anggota per kelompok)
+  const grouped = data.reduce((acc, m) => {
+    const g = m.group_number ?? 0;
+    if (!acc[g]) acc[g] = [];
+    acc[g].push(m);
+    return acc;
+  }, {} as Record<number, TwibbonMember[]>);
+
+  const groupNumbers = Object.keys(grouped).map(Number).sort((a, b) => a - b);
+
+  list.innerHTML = groupNumbers
+    .map(gNum => {
+      const members = grouped[gNum];
+      const filled = members.filter(m => m.nim && m.nim.trim().length > 0);
+      return `
+        <div class="col-span-full">
+          <h3 class="font-display font-bold text-lg mb-3 flex items-center gap-2">
+            <span class="w-8 h-8 rounded-lg bg-ti-cyan text-white flex items-center justify-center text-sm">${gNum}</span>
+            <span>Kelompok ${gNum}</span>
+            <span class="text-sm font-normal text-gray-500">(${filled.length}/6 terisi)</span>
+          </h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-8">
+            ${members
+              .map(
+                (m: TwibbonMember) => `
+              <div class="member-card cursor-pointer hover:border-ti-cyan transition-colors" data-member-id="${m.id}">
+                <div class="member-num">${m.position ?? '?'}</div>
+                <div class="flex-1 min-w-0">
+                  <p class="font-semibold text-sm truncate" title="${escapeHtml(m.name)}">${escapeHtml(m.name)}</p>
+                  <p class="member-nim">${m.nim ? escapeHtml(m.nim) : 'NIM belum diisi'}</p>
+                </div>
+              </div>
+            `,
+              )
+              .join('')}
+          </div>
         </div>
-      </div>
-    `,
-      )
-      .join('');
+      `;
+    })
+    .join('');
+
+  // Setup click handlers untuk modal edit (public bisa isi)
+  list.querySelectorAll<HTMLElement>('.member-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const memberId = card.dataset.memberId;
+      if (memberId) showMemberEditModal(memberId, data);
+    });
+  });
+}
+
+function showMemberEditModal(memberId: string, allMembers: TwibbonMember[]): void {
+  const member = allMembers.find(m => m.id === memberId);
+  if (!member) return;
+
+  const modal = document.createElement('div');
+  modal.className = 'modal-backdrop';
+  modal.innerHTML = `
+    <div class="modal-card max-w-md">
+      <h3 class="font-display text-xl font-bold mb-4">Edit Anggota Kelompok ${member.group_number} · Posisi ${member.position}</h3>
+      <form id="member-edit-form" class="space-y-4">
+        <div>
+          <label class="block font-medium mb-1">Nama Lengkap *</label>
+          <input type="text" id="edit-name" value="${escapeHtml(member.name === '(Belum diisi)' ? '' : member.name)}" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:border-ti-cyan focus:ring-2 focus:ring-ti-cyan/20 outline-none" placeholder="Nama lengkap" />
+        </div>
+        <div>
+          <label class="block font-medium mb-1">NIM * <span class="text-xs text-gray-500">(format: 162026001)</span></label>
+          <input type="text" id="edit-nim" value="${escapeHtml(member.nim ?? '')}" required pattern="162026\\d{3}" inputmode="numeric" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:border-ti-cyan focus:ring-2 focus:ring-ti-cyan/20 outline-none font-mono" placeholder="162026001" />
+          <p class="text-xs text-gray-500 mt-1">9 digit, prefix 162026</p>
+        </div>
+        <div class="flex gap-2">
+          <button type="submit" class="btn-primary flex-1">Simpan</button>
+          <button type="button" class="btn-secondary" id="cancel-edit">Batal</button>
+        </div>
+      </form>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+  modal.addEventListener('click', e => {
+    if (e.target === modal) modal.remove();
+  });
+  modal.querySelector('#cancel-edit')?.addEventListener('click', () => modal.remove());
+
+  const form = modal.querySelector<HTMLFormElement>('#member-edit-form')!;
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const name = (modal.querySelector('#edit-name') as HTMLInputElement).value.trim();
+    const nim = (modal.querySelector('#edit-nim') as HTMLInputElement).value.trim();
+    if (!name || !nim) return;
+
+    const { error } = await supabase
+      .from('twibbon_members')
+      .update({ name, nim, updated_at: new Date().toISOString(), updated_by: 'public' })
+      .eq('id', memberId);
+
+    if (error) {
+      toast(error.message, 'error');
+      return;
+    }
+    toast('Anggota berhasil diperbarui!', 'success');
+    modal.remove();
+    loadMembers(); // Reload
+  });
 }
 
 async function loadFeed(): Promise<void> {

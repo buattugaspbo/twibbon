@@ -33,7 +33,10 @@
       "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'feat: add real HMTI & UMP logos + replace PT placeholder *)",
       "Bash(git -c user.email=\"kumpultwibbon@local\" -c user.name=\"panitia\" commit -m \"fix: admin navbar logo layout\")",
       "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'fix: admin navbar - simplify logo layout *)",
-      "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'refactor: remove identity modal + move name/NIM input to submit form *)"
+      "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'refactor: remove identity modal + move name/NIM input to submit form *)",
+      "Bash(unzip -l bahantwib.zip)",
+      "Bash(unzip -o bahantwib.zip)",
+      "Bash(cp \"C:\\\\Users\\\\bagas\\\\Downloads\\\\bahantwib/FRAME VIDEO IT_20260827_133925_0000.png\" \"C:\\\\Users\\\\bagas\\\\Downloads\\\\kumpultwibbon\\\\public\\\\frame-video-intro.png\" && ls -lh \"C:\\\\Users\\\\bagas\\\\Downloads\\\\kumpultwibbon\\\\public\\\\\")"
     ]
   }
 }

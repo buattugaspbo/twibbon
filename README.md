@@ -9,9 +9,47 @@ Peserta submit twibbon & video perkenalan → admin approve manual → gallery I
 ## Stack
 
 - **Frontend**: Vite + TypeScript + Tailwind CSS (vanilla, no React)
-- **Backend**: Supabase (Postgres + Auth + Storage) — pakai project existing
+- **Backend**: Supabase (Postgres + Auth + Storage)
 - **Hosting**: Vercel (auto-deploy via GitHub: `buattugaspbo/twibbon`)
 - **Repo**: https://github.com/buattugaspbo/twibbon
+- **Live**: https://pkkmbti.vercel.app
+
+---
+
+## Setup Supabase (sekali)
+
+### 1. Database & Storage
+
+Buka Supabase Dashboard → SQL Editor → New query → paste seluruh isi [`supabase-setup.sql`](./supabase-setup.sql) → Run.
+
+- Bikin 5 tabel `twibbon_*`
+- Bikin storage bucket `twibbon-assets` (public, max 5 MB)
+- Set RLS policies
+- Seed settings + S&K default
+
+### 2. Refactor Kelompok (100 Slot Kosong)
+
+Buka SQL Editor → paste isi [`supabase-refactor-kelompok.sql`](./supabase-refactor-kelompok.sql) → Run.
+
+- Hapus 66 anggota lama (pindah ke history)
+- Bikin 100 slot kosong: 20 kelompok × 5 anggota
+- Kelompok 1: posisi 1-5, Kelompok 2: posisi 6-10, dst
+- Admin bisa isi/edit manual via admin panel
+
+### 3. Admin User
+
+Buka Supabase Dashboard → **Authentication** → **Users** → **Add user**:
+- Email: `asepcontoh@gmail.com`
+- Password: `hmtiadmin911`
+- Auto-confirm email: **YES** (centang)
+- Save
+
+### 4. Upload Bahan Twibbon & Video
+
+Admin login → Tab **Files** → Upload:
+- **Bingkai twibbon**: pilih `public/frame-video-intro.png` (7 MB)
+- **Video intro**: upload manual file video lo (dari zip)
+- Atau tambahin link eksternal: https://twb.nz/teknologinformasi26
 
 ---
 
@@ -22,27 +60,11 @@ Copy-paste ke **Vercel Project Settings → Environment Variables**:
 | Name | Value |
 |---|---|
 | `VITE_SUPABASE_URL` | `https://vmehxcbrdlkcbgpwomzw.supabase.co` |
-| `VITE_SUPABASE_ANON_KEY` | `sb_publishable_Dj7VgiiCyWequqKWiI5arA_gAr7w6lK` |
+| `VITE_SUPABASE_ANON_KEY` | `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZtZWh4Y2JyZGxrY2JncHdvbXp3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjU1Mjg2MDUsImV4cCI6MjA0MTEwNDYwNX0.c-2vgoYE2DnOHWWmO7lQCNn6YLLxH0_u2Xl-egXsSR0` |
 
-⚠️ Jangan pakai service_role key — cukup anon public key. RLS policies yang handle authorization.
+⚠️ **Environment**: centang **Production, Preview, Development** (semua) untuk kedua variable.
 
----
-
-## Setup Supabase (sekali)
-
-a. Buka Supabase Dashboard → SQL Editor → New query → paste seluruh isi [`supabase-setup.sql`](./supabase-setup.sql) → Run.
-   - Bikin 4 tabel `twibbon_*`
-   - Seed 66 anggota dari list HIMTI
-   - Bikin storage bucket `twibbon-assets` (public, max 5 MB)
-   - Set RLS policies
-
-b. **Authentication** → Providers → **Email** → enable.
-
-c. **Authentication** → Users → **Add user** → Create new user
-   - Email: `panitia.pkkmb.ti@ump.ac.id` (atau email admin lo)
-   - Confirm
-
-d. Bikin admin email whitelist (opsional — cukup RLS aja udah cukup aman).
+Setelah Save → **Deployments** → Redeploy deployment terakhir.
 
 ---
 
@@ -63,55 +85,67 @@ npm run dev   # http://localhost:5173
 
 | URL | Fungsi |
 |---|---|
-| `/` | Landing — hero + logo, identity modal, deadline countdown, S&K, bingkai, progress bar, daftar 66 anggota, gallery IG-style |
-| `/submit.html` | Form submit (NIM auto-fill dari identitas landing) |
-| `/admin/` | Dashboard admin (magic link auth): approval queue, CRUD anggota, CRUD files, settings (judul, target, deadline, video), S&K editor |
+| `/` | Landing — hero, deadline countdown, S&K, bingkai download, progress bar, 100 slot anggota (20 kelompok), gallery IG-style |
+| `/submit.html` | Form submit: Nama + NIM + link IG + screenshot upload |
+| `/admin/` | Dashboard admin (magic link `asepcontoh@gmail.com` / `hmtiadmin911`): approval queue, CRUD anggota (100 slot), CRUD files, settings (deadline, target, video), S&K editor |
 
 ---
 
-## Workflow Panitia (daily)
+## Workflow Admin
 
-1. Buka `/admin/` → masuk email → klik magic link di email → dashboard
-2. Tab **Pending** → review submission masuk → Approve / Reject (+ alasan) / Hapus
-4. Tab **Anggota** → edit NIM/nama/kelompok/posisi, atau tambah/hapus manual. Semua perubahan auto-logged di tab **History**
-5. Tab **Files** → upload bingkai baru atau video intro
-6. Tab **Settings** → ubah judul, target peserta, **deadline** (label + tanggal), URL video
-7. Tab **S&K** → edit Markdown S&K (live preview)
+1. Login `/admin/` → email `asepcontoh@gmail.com` → masuk dashboard
+2. Tab **Pending** → Approve/Reject submission masuk
+3. Tab **Anggota** → isi 100 slot kosong (wajib Nama + NIM), edit/hapus manual. History auto-log.
+4. Tab **Files** → upload bingkai baru, atau link eksternal https://twb.nz/teknologinformasi26
+5. Tab **Settings** → ubah deadline (label + tanggal), target peserta (default 66), video URL
+6. Tab **S&K** → edit Markdown live preview
 
 ---
 
 ## Workflow Peserta
 
-1. Buka link web → modal minta **Nama + NIM** → masuk beranda
-2. Section **Bahan Twibbon** → download bingkai → post ke IG
-3. Klik **Submit** di header → upload screenshot + link post + centang S&K
-4. Tunggu approval → muncul di gallery
+1. Buka web → klik **Submit**
+2. Isi **Nama + NIM** (wajib 8-10 digit angka)
+3. Download bingkai dari section **Bahan Twibbon** → edit pakai foto → post ke IG
+4. Submit: link post IG + screenshot + centang S&K
+5. Tunggu approval admin → muncul di gallery
 
 ---
 
-## Deploy ke Vercel
+## Struktur Kelompok
 
-Repo udah di-push ke GitHub: **https://github.com/buattugaspbo/twibbon**
+**20 kelompok × 5 anggota = 100 slot**
 
-1. Login ke [vercel.com](https://vercel.com) → **Add New Project** → Import `buattugaspbo/twibbon`
-2. Framework Preset: **Vite** (auto-detect)
-3. **Environment Variables** → paste dari tabel di atas
-4. Deploy
+| Kelompok | Posisi (NIM urutan) |
+|---|---|
+| 1 | 1-5 |
+| 2 | 6-10 |
+| 3 | 11-15 |
+| ... | ... |
+| 20 | 96-100 |
 
-Auto-deploy setiap push ke `main`.
+Admin isi manual via panel admin. Semua perubahan tercatat di tab **History** (siapa, kapan, apa yang diubah).
+
+---
+
+## Bahan Twibbon
+
+- **Link eksternal**: https://twb.nz/teknologinformasi26
+- **File lokal**: `public/frame-video-intro.png` (7 MB) — upload manual via admin panel tab Files
+- **Video perkenalan**: upload manual ZIP video lo via admin panel
 
 ---
 
 ## Schema
 
 ```
-twibbon_settings           key-value: event_title, event_subtitle, target_count,
+twibbon_settings           key-value: event_title, event_subtitle, target_count (default 66),
                                        video_url, deadline_at, deadline_label
-twibbon_posts              submissions (NIM unik)
-twibbon_files              bingkai + video metadata
+twibbon_posts              submissions (NIM unique, status: pending/approved/rejected)
+twibbon_files              bingkai + video metadata (file_kind: frame/video)
 twibbon_terms              S&K Markdown (id=1)
-twibbon_members            66 anggota roster
-twibbon_member_history     audit log (siapa ubah apa)
+twibbon_members            100 slot anggota (20 kelompok × 5 anggota, diisi manual)
+twibbon_member_history     audit log (action: created/updated/deleted, old_data, new_data)
 
 storage: twibbon-assets/ (public)
   screenshots/<nim>-<ts>.<ext>     participant upload
@@ -125,34 +159,38 @@ storage: twibbon-assets/ (public)
 
 - **Palette**: UMP kuning `#F5C518` × TI cyan `#0EA5E9`
 - **Font**: Inter (body) + Plus Jakarta Sans (display) + JetBrains Mono (code)
-- **Custom SVG**: hero background dengan pattern grid, code snippet accent, polygon motifs — bukan template default
-- **Identity chip** di header nge-track siapa yang lagi login
+- **Logo**: HMTI + UMP di navbar (favicon: logo HMTI)
+- **Hero background**: custom SVG grid pattern (bukan template AI)
 
 ---
 
-## Security Notes
+## Security
 
-Implementasi keamanan minimal tapi proper:
-
-- **Honeypot** field di submit form (anti-bot)
-- **NIM regex** validation client-side
-- **Magic link** auth (gak ada password)
-- **RLS** enforce di Supabase (public cuma bisa select approved, anon cuma bisa insert pending, admin full access)
-- **HTML escape** semua user-generated content (post IG URL, member name, notes)
-- **Storage policy** restrict upload ke folder `screenshots/` only untuk anon
-- **Input size limit** (5 MB untuk screenshot, 20 MB untuk admin files)
-
-⚠️ Public anon key aman dipakai di client — RLS yang handle authorization.
+- **Honeypot** field anti-bot di submit form
+- **NIM regex** validation client-side (8-10 digit)
+- **Magic link** auth (no password bruteforce)
+- **RLS** enforce: public read approved only, anon insert pending only, admin full access
+- **HTML escape** all user-generated content (post URL, member name, notes)
+- **Storage policy**: anon upload restricted to `screenshots/` folder only
+- **Input size limit**: 5 MB screenshot (user), 20 MB files (admin)
 
 ---
 
-## Logo Files (perlu upload manual)
+## Admin Credentials
 
-Drop file logo ke `public/`:
-- `public/logo-hmti.png` — logo HMTI (gambar lo yang dikirim)
-- `public/logo-ump.png` — logo UMP
+**Email**: `asepcontoh@gmail.com`  
+**Password**: `hmtiadmin911`
 
-File ini udah di-reference di `index.html` (header + hero) dan `admin/index.html` header. Kalau file gak ada, `onerror` handler sembunyikan tag img-nya biar UI gak rusak.
+⚠️ Ganti password via Supabase Dashboard → Authentication → Users → edit user → Reset password.
+
+---
+
+## Deploy ke Vercel
+
+1. Push ke GitHub `buattugaspbo/twibbon` (udah auto-connect)
+2. Vercel auto-detect Vite → auto-deploy setiap push `main`
+3. Set env vars (lihat tabel di atas) → Redeploy
+4. Live: https://pkkmbti.vercel.app
 
 ---
 
@@ -160,13 +198,33 @@ File ini udah di-reference di `index.html` (header + hero) dan `admin/index.html
 
 | Command | Fungsi |
 |---|---|
-| `npm run dev` | Dev server di `localhost:5173` |
+| `npm run dev` | Dev server `localhost:5173` |
 | `npm run build` | Production build → `dist/` |
 | `npm run preview` | Preview build lokal |
 | `npm run typecheck` | TypeScript check |
 
 ---
 
+## Troubleshooting
+
+**Q: Web stuck "Memuat..." / Console error 401 Unauthorized**  
+A: Anon key salah. Buka Supabase → Settings → API → copy **anon public** (JWT panjang `eyJhbGci...`) → ganti di Vercel env vars → Redeploy.
+
+**Q: Admin gak bisa login**  
+A: User belum dibuat atau email belum confirmed. Buka Supabase → Authentication → Users → Add `asepcontoh@gmail.com` dengan password `hmtiadmin911` → centang Auto-confirm.
+
+**Q: Kelompok masih 66 anggota, bukan 100 slot**  
+A: Belum run migration. Buka SQL Editor → paste `supabase-refactor-kelompok.sql` → Run.
+
+**Q: Favicon masih logo PT**  
+A: Browser cache. Hard refresh (`Ctrl+Shift+R`) atau buka incognito.
+
+---
+
 ## License
 
 Internal — PKKMB FAKULTAS TEKNIK – TEKNOLOGI INFORMASI UMP 2026 · HIMTI.
+
+---
+
+**Created by bazzcreate** · https://bazzcreate.vercel.app

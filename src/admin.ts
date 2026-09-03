@@ -437,8 +437,8 @@ async function renderHistory(): Promise<void> {
   }
 
   const diffSummary = (h: TwibbonMemberHistory): string => {
-    if (h.action === 'created') return `Nama: <strong>${escapeHtml(h.new_data?.name ?? '?')}</strong>`;
-    if (h.action === 'deleted') return `Nama: <strong class="text-red-600 line-through">${escapeHtml(h.old_data?.name ?? '?')}</strong>`;
+    if (h.action === 'created') return `Nama: <strong>${escapeHtml(String(h.new_data?.name ?? '?'))}</strong>`;
+    if (h.action === 'deleted') return `Nama: <strong class="text-red-600 line-through">${escapeHtml(String(h.old_data?.name ?? '?'))}</strong>`;
     const changes: string[] = [];
     const oldData = h.old_data ?? {};
     const newData = h.new_data ?? {};

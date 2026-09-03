@@ -40,7 +40,8 @@
       "Bash(git -c user.email=\"kumpultwibbon@local\" -c user.name=\"panitia\" commit -m \"fix: migration changed_by_kind enum \\(migration → system\\)\")",
       "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'feat: upgrade setup final - email/password login + 6 anggota kelompok + konten lengkap *)",
       "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'feat: kelompok modal edit + grouped display \\(6 anggota per kelompok\\) *)",
-      "Bash(git -c user.email=\"kumpultwibbon@local\" -c user.name=\"panitia\" commit -m \"fix: TypeScript error - explicit type annotation untuk filter members\")"
+      "Bash(git -c user.email=\"kumpultwibbon@local\" -c user.name=\"panitia\" commit -m \"fix: TypeScript error - explicit type annotation untuk filter members\")",
+      "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'feat: popup grup WA + gallery UI \\(nama+NIM\\) + rejection message + NIM validation 162026xxx *)"
     ]
   }
 }

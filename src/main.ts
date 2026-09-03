@@ -343,7 +343,7 @@ function renderFeedPage(): void {
       <a href="${escapeHtml(p.ig_url)}" target="_blank" rel="noopener noreferrer" class="tile group" aria-label="Lihat di Instagram">
         <img src="${escapeHtml(publicUrl(p.screenshot_path))}" alt="Twibbon ${escapeHtml(p.nim)}" loading="lazy" />
         <div class="overlay">
-          <span class="text-xs font-semibold uppercase tracking-wide relative z-10">PKKMB TI</span>
+          <span class="text-xs font-semibold uppercase tracking-wide relative z-10">${escapeHtml(p.name || 'PKKMB TI')}</span>
           <span class="text-xs font-mono relative z-10">${escapeHtml(p.nim)}</span>
         </div>
       </a>
@@ -408,6 +408,10 @@ function checkSubmittedFlag(): void {
     setTimeout(() => {
       document.getElementById('feed')?.scrollIntoView({ behavior: 'smooth' });
     }, 300);
+  } else if (params.get('rejected') === '1') {
+    const reason = params.get('reason') || 'Twibbon kamu ditolak admin. Cek catatan atau hubungi panitia.';
+    toast(decodeURIComponent(reason), 'error', 8000);
+    window.history.replaceState({}, '', window.location.pathname);
   }
 }
 

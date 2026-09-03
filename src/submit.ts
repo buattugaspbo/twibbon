@@ -2,9 +2,33 @@ import './style.css';
 import { supabase, STORAGE_BUCKET } from './lib/supabase';
 import { toast } from './lib/ui';
 
+function showJoinGrupPopup(): void {
+  const popup = document.createElement('div');
+  popup.className = 'modal-backdrop';
+  popup.innerHTML = `
+    <div class="modal-card max-w-md text-center">
+      <h3 class="font-display text-2xl font-bold mb-2">🎉 Berhasil Submit!</h3>
+      <p class="text-gray-600 mb-4">Twibbon kamu akan muncul di gallery setelah admin approve.</p>
+      <p class="font-semibold mb-3">Jangan lupa join grup untuk update info PKKMB:</p>
+      <div class="flex flex-col sm:flex-row gap-2">
+        <a href="https://chat.whatsapp.com/XXX" target="_blank" rel="noopener noreferrer" class="btn-primary flex-1">
+          📱 Join Grup WA
+        </a>
+        <button id="close-popup" class="btn-secondary flex-1">Tutup</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(popup);
+  popup.addEventListener('click', e => {
+    if (e.target === popup || (e.target as HTMLElement).id === 'close-popup') {
+      popup.remove();
+    }
+  });
+}
+
 const IG_URL_REGEX =
   /^https:\/\/(www\.)?instagram\.com\/(p|reel|reels)\/[A-Za-z0-9_-]+/;
-const NIM_REGEX = /^\d{8,10}$/;
+const NIM_REGEX = /^162026\d{3}$/;
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 
@@ -89,7 +113,7 @@ form.addEventListener('submit', async e => {
   }
 
   if (!NIM_REGEX.test(nim)) {
-    setFieldError(nimInput, 'NIM harus 8–10 digit angka.');
+    setFieldError(nimInput, 'NIM harus format 162026xxx (9 digit).');
     ok = false;
   } else {
     setFieldError(nimInput, null);
@@ -140,7 +164,7 @@ form.addEventListener('submit', async e => {
 
     const { error: insErr } = await supabase
       .from('twibbon_posts')
-      .insert({ nim, ig_url: igVal, screenshot_path: path });
+      .insert({ nim, name, ig_url: igVal, screenshot_path: path });
     if (insErr) {
       await supabase.storage.from(STORAGE_BUCKET).remove([path]);
       if (insErr.code === '23505') {
@@ -149,7 +173,12 @@ form.addEventListener('submit', async e => {
       throw insErr;
     }
 
-    window.location.href = '/index.html?submitted=1';
+    // Show popup join grup
+    showJoinGrupPopup();
+
+    setTimeout(() => {
+      window.location.href = '/index.html?submitted=1';
+    }, 3000);
   } catch (err) {
     const msg = err instanceof Error ? err.message : 'Gagal submit. Coba lagi.';
     toast(msg, 'error', 6000);

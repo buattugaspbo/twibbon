@@ -20,29 +20,29 @@
   .ump-gradient {
     background: linear-gradient(135deg, #F5C518 0%, #0EA5E9 100%);
   }
+  /* Gallery tile - card style dengan foto + info balanced */
   .tile {
-    @apply relative overflow-hidden cursor-pointer;
-    aspect-ratio: 1 / 1;
-    background: #f3f4f6;
+    @apply relative overflow-hidden cursor-pointer bg-white rounded-xl shadow-sm hover:shadow-lg transition-shadow border border-gray-200;
+    display: flex;
+    flex-direction: column;
   }
   .tile img {
-    @apply w-full h-full object-cover transition-transform duration-300;
-  }
-  .tile:hover img {
-    transform: scale(1.03);
-    filter: brightness(0.75);
+    @apply w-full object-cover;
+    aspect-ratio: 1 / 1;
   }
   .tile .overlay {
-    @apply absolute inset-0 flex flex-col justify-between p-3 opacity-0 transition-opacity duration-200;
-    color: white;
+    @apply p-3 flex flex-col gap-1;
+    color: #1e293b;
+    background: white;
   }
-  .tile:hover .overlay { @apply opacity-100; }
   .tile .overlay::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(transparent 50%, rgba(0, 0, 0, 0.4));
-    pointer-events: none;
+    display: none;
+  }
+  .tile:hover img {
+    transform: scale(1.02);
+  }
+  .tile .overlay {
+    opacity: 1;
   }
   .markdown { @apply text-gray-700 leading-relaxed; }
   .markdown h1 { @apply text-2xl font-bold mt-6 mb-3; }

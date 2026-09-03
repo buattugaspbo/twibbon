@@ -160,6 +160,53 @@ async function renderPending(): Promise<void> {
   });
 }
 
+function showRejectModal(postId: string): void {
+  const modal = document.createElement('div');
+  modal.className = 'modal-backdrop';
+  modal.innerHTML = `
+    <div class="modal-card max-w-md">
+      <h3 class="font-display text-xl font-bold mb-4">Reject Submission</h3>
+      <form id="reject-form" class="space-y-4">
+        <div>
+          <label class="block font-medium mb-1">Alasan Reject (opsional)</label>
+          <textarea id="reject-reason" rows="3" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:border-ti-cyan focus:ring-2 focus:ring-ti-cyan/20 outline-none resize-none" placeholder="Misal: Screenshot kurang jelas, IG URL salah, dll"></textarea>
+          <p class="text-xs text-gray-500 mt-1">User akan melihat alasan ini sebagai notifikasi.</p>
+        </div>
+        <div class="flex gap-2">
+          <button type="submit" class="btn-primary flex-1 bg-red-600 hover:bg-red-700">Reject</button>
+          <button type="button" class="btn-secondary flex-1" id="cancel-reject">Batal</button>
+        </div>
+      </form>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+  modal.addEventListener('click', e => {
+    if (e.target === modal) modal.remove();
+  });
+  modal.querySelector('#cancel-reject')?.addEventListener('click', () => modal.remove());
+
+  const form = modal.querySelector<HTMLFormElement>('#reject-form')!;
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const reason = (modal.querySelector('#reject-reason') as HTMLTextAreaElement).value.trim();
+
+    const { error } = await supabase
+      .from('twibbon_posts')
+      .update({ status: 'rejected', notes: reason || null })
+      .eq('id', postId);
+
+    if (error) {
+      toast(error.message, 'error');
+      return;
+    }
+
+    toast('Submission di-reject.', 'info');
+    modal.remove();
+    renderPending();
+  });
+}
+
 async function handleAction(id: string, act: string): Promise<void> {
   if (act === 'approve') {
     const { error } = await supabase
@@ -173,18 +220,7 @@ async function handleAction(id: string, act: string): Promise<void> {
     toast('Approved!', 'success');
     renderPending();
   } else if (act === 'reject') {
-    const reason = prompt('Alasan reject (opsional)?');
-    if (reason === null) return;
-    const { error } = await supabase
-      .from('twibbon_posts')
-      .update({ status: 'rejected', reject_reason: reason || null })
-      .eq('id', id);
-    if (error) {
-      toast(error.message, 'error');
-      return;
-    }
-    toast('Rejected.', 'info');
-    renderPending();
+    showRejectModal(id);
   } else if (act === 'delete') {
     if (!confirm('Hapus submission ini permanen? (Screenshot di storage juga akan dihapus)')) return;
     const { data: row } = await supabase

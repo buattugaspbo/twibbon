@@ -343,8 +343,8 @@ function renderFeedPage(): void {
       <a href="${escapeHtml(p.ig_url)}" target="_blank" rel="noopener noreferrer" class="tile group" aria-label="Lihat di Instagram">
         <img src="${escapeHtml(publicUrl(p.screenshot_path))}" alt="Twibbon ${escapeHtml(p.nim)}" loading="lazy" />
         <div class="overlay">
-          <span class="text-xs font-semibold uppercase tracking-wide relative z-10">${escapeHtml(p.name || 'PKKMB TI')}</span>
-          <span class="text-xs font-mono relative z-10">${escapeHtml(p.nim)}</span>
+          <span class="text-sm font-semibold truncate">${escapeHtml(p.name || 'Peserta PKKMB')}</span>
+          <span class="text-xs font-mono text-gray-500">${escapeHtml(p.nim)}</span>
         </div>
       </a>
     `,

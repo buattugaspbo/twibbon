@@ -23,7 +23,7 @@ select
   row_to_json(twibbon_members.*),
   null,
   'system',
-  'migration',
+  'system',
   'Refactor kelompok: 66 anggota lama dihapus, diganti 100 slot kosong'
 from twibbon_members;
 

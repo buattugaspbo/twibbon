@@ -491,11 +491,11 @@ function renderFeedPage(): void {
   const html = next
     .map(
       p => `
-      <a href="${escapeHtml(p.ig_url)}" target="_blank" rel="noopener noreferrer" class="tile group" aria-label="Lihat di Instagram">
-        <img src="${escapeHtml(publicUrl(p.screenshot_path))}" alt="Twibbon ${escapeHtml(p.nim)}" loading="lazy" />
+      <a href="${escapeHtml(p.ig_url)}" target="_blank" rel="noopener noreferrer" class="tile" aria-label="Lihat di Instagram">
+        <img src="${escapeHtml(publicUrl(p.screenshot_path))}" alt="${escapeHtml(p.name || 'Twibbon')}" loading="lazy" />
         <div class="overlay">
-          <span class="text-sm font-semibold truncate">${escapeHtml(p.name || 'Peserta PKKMB')}</span>
-          <span class="text-xs font-mono text-gray-500">${escapeHtml(p.nim)}</span>
+          <span class="text-sm font-semibold">${escapeHtml(p.name || 'Peserta PKKMB')}</span>
+          <span class="text-xs font-mono opacity-90">${escapeHtml(p.nim)}</span>
         </div>
       </a>
     `,

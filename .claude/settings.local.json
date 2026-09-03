@@ -43,7 +43,8 @@
       "Bash(git -c user.email=\"kumpultwibbon@local\" -c user.name=\"panitia\" commit -m \"fix: TypeScript error - explicit type annotation untuk filter members\")",
       "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'feat: popup grup WA + gallery UI \\(nama+NIM\\) + rejection message + NIM validation 162026xxx *)",
       "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'feat: gallery UI overhaul + admin rejection modal + mobile responsive improvements *)",
-      "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'feat: MAJOR OVERHAUL - pisah section Twibbon + Video Perkenalan + all remaining features *)"
+      "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'feat: MAJOR OVERHAUL - pisah section Twibbon + Video Perkenalan + all remaining features *)",
+      "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'feat: Instagram-style gallery - 3 col grid, minimal gap, hover overlay *)"
     ]
   }
 }

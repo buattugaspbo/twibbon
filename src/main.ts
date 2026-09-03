@@ -213,14 +213,14 @@ async function loadMembers(): Promise<void> {
     if (!acc[g]) acc[g] = [];
     acc[g].push(m);
     return acc;
-  }, {} as Record<number, TwibbonMember[]>);
+  }, {} as Record<number, typeof data>);
 
   const groupNumbers = Object.keys(grouped).map(Number).sort((a, b) => a - b);
 
   list.innerHTML = groupNumbers
     .map(gNum => {
       const members = grouped[gNum];
-      const filled = members.filter(m => m.nim && m.nim.trim().length > 0);
+      const filled = members.filter((m: TwibbonMember) => m.nim && m.nim.trim().length > 0);
       return `
         <div class="col-span-full">
           <h3 class="font-display font-bold text-lg mb-3 flex items-center gap-2">

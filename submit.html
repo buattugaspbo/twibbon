@@ -14,34 +14,43 @@
     <header class="bg-white border-b border-gray-200">
       <div class="max-w-ig mx-auto h-14 flex items-center justify-between px-4">
         <a href="/" class="font-display font-bold flex items-center gap-2">
-          <span class="w-7 h-7 rounded-lg ump-gradient flex items-center justify-center text-white text-xs font-bold">PT</span>
-          PKKMB TI UMP
+          <img src="/logo-hmti.webp" alt="HMTI" class="w-8 h-8 object-contain" />
+          <span class="hidden sm:inline">PKKMB TI UMP</span>
+          <img src="/logo-ump.webp" alt="UMP" class="hidden sm:block w-8 h-8 object-contain" />
         </a>
         <a href="/" class="text-sm text-gray-600 hover:text-ti-cyan">← Kembali</a>
       </div>
     </header>
 
-    <main class="max-w-xl mx-auto px-4 py-10">
+    <main class="max-w-2xl mx-auto px-4 py-10">
       <h1 class="font-display text-3xl font-bold mb-2">Submit Twibbon</h1>
-      <p class="text-gray-600 mb-6">Pastikan twibbon kamu sudah di-post ke IG & sesuai <a href="/#terms" class="text-ti-cyan hover:underline" target="_blank">S&K</a>.</p>
+      <p class="text-gray-600 mb-8">Pastikan twibbon kamu sudah di-post ke IG & sesuai <a href="/#terms" class="text-ti-cyan hover:underline" target="_blank">S&K</a>.</p>
 
-      <div id="identity-banner" class="hidden mb-4 p-3 rounded-lg bg-ump-yellow/10 border border-ump-yellow/30 text-sm flex items-center justify-between gap-3">
-        <span>Submit sebagai <strong id="identity-banner-name"></strong> (<span id="identity-banner-nim" class="font-mono"></span>)</span>
-        <a href="/" class="text-ti-cyan hover:underline text-xs">Salah identitas?</a>
-      </div>
-
-      <form id="submit-form" class="space-y-5 bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-200" novalidate>
+      <form id="submit-form" class="space-y-6 bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-200" novalidate>
         <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" class="honeypot" aria-hidden="true" />
 
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label for="name" class="block font-medium mb-1">Nama Lengkap *</label>
+            <input type="text" id="name" name="name" required placeholder="Contoh: Bagas Satryo Wiratama" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:border-ti-cyan focus:ring-2 focus:ring-ti-cyan/20 outline-none" />
+            <p class="field-error"></p>
+          </div>
+          <div>
+            <label for="nim" class="block font-medium mb-1">NIM *</label>
+            <input type="text" id="nim" name="nim" inputmode="numeric" pattern="\d{8,10}" required placeholder="8–10 digit" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:border-ti-cyan focus:ring-2 focus:ring-ti-cyan/20 outline-none" />
+            <p class="field-error"></p>
+          </div>
+        </div>
+
         <div>
-          <label for="ig-url" class="block font-medium mb-1">Link Postingan Instagram</label>
+          <label for="ig-url" class="block font-medium mb-1">Link Postingan Instagram *</label>
           <input type="url" id="ig-url" name="ig_url" required placeholder="https://www.instagram.com/p/..." class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:border-ti-cyan focus:ring-2 focus:ring-ti-cyan/20 outline-none" />
           <p class="field-error"></p>
           <p class="text-xs text-gray-500 mt-1">Dari post atau reel IG kamu yang memuat twibbon.</p>
         </div>
 
         <div>
-          <label class="block font-medium mb-1">Screenshot Twibbon</label>
+          <label class="block font-medium mb-1">Screenshot Twibbon *</label>
           <div id="drop-zone" class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-ti-cyan transition-colors">
             <input type="file" id="screenshot" name="screenshot" accept="image/jpeg,image/png,image/webp" required class="hidden" />
             <img id="file-preview" class="hidden max-h-48 mx-auto rounded mb-2" alt="" />

@@ -14,29 +14,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
   </head>
   <body class="font-sans">
-    <div id="identity-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="identity-title">
-      <div class="modal-card">
-        <div class="flex items-center gap-2 mb-2">
-          <span class="w-9 h-9 rounded-lg ump-gradient flex items-center justify-center text-white text-xs font-bold">PT</span>
-          <span class="font-display font-bold text-sm text-gray-500">PKKMB TI UMP</span>
-        </div>
-        <h2 id="identity-title" class="font-display text-xl font-bold mb-1">Halo, maba! 👋</h2>
-        <p class="text-sm text-gray-600 mb-5">Sebelum mulai, isi nama & NIM kamu dulu ya. Dipakai buat nge-tag kamu di gallery.</p>
-        <form id="identity-form" class="space-y-4" novalidate>
-          <div>
-            <label for="identity-name" class="block text-sm font-medium mb-1">Nama Lengkap</label>
-            <input id="identity-name" name="name" type="text" required placeholder="Contoh: Bagas Satryo Wiratama" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:border-ti-cyan focus:ring-2 focus:ring-ti-cyan/20 outline-none" />
-            <p class="field-error" data-for="identity-name"></p>
-          </div>
-          <div>
-            <label for="identity-nim" class="block text-sm font-medium mb-1">NIM</label>
-            <input id="identity-nim" name="nim" type="text" inputmode="numeric" pattern="\d{8,10}" required placeholder="8–10 digit angka" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:border-ti-cyan focus:ring-2 focus:ring-ti-cyan/20 outline-none" />
-            <p class="field-error" data-for="identity-nim"></p>
-          </div>
-          <button type="submit" class="btn-primary w-full">Masuk Beranda</button>
-        </form>
-      </div>
-    </div>
 
     <header class="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-gray-200">
       <div class="max-w-ig mx-auto h-14 flex items-center justify-between px-4 gap-3">

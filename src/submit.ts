@@ -1,14 +1,16 @@
 import './style.css';
 import { supabase, STORAGE_BUCKET } from './lib/supabase';
 import { toast } from './lib/ui';
-import { getIdentity } from './lib/identity';
 
 const IG_URL_REGEX =
   /^https:\/\/(www\.)?instagram\.com\/(p|reel|reels)\/[A-Za-z0-9_-]+/;
+const NIM_REGEX = /^\d{8,10}$/;
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 
 const form = document.querySelector<HTMLFormElement>('#submit-form')!;
+const nameInput = document.querySelector<HTMLInputElement>('#name')!;
+const nimInput = document.querySelector<HTMLInputElement>('#nim')!;
 const igInput = document.querySelector<HTMLInputElement>('#ig-url')!;
 const fileInput = document.querySelector<HTMLInputElement>('#screenshot')!;
 const agreeCheckbox = document.querySelector<HTMLInputElement>('#agree')!;
@@ -17,9 +19,6 @@ const submitBtn = document.querySelector<HTMLButtonElement>('#submit-btn')!;
 const dropZone = document.querySelector<HTMLDivElement>('#drop-zone')!;
 const filePreview = document.querySelector<HTMLImageElement>('#file-preview')!;
 const fileLabel = document.querySelector<HTMLElement>('#file-label')!;
-const identityBanner = document.querySelector<HTMLElement>('#identity-banner')!;
-const identityName = document.querySelector<HTMLElement>('#identity-banner-name')!;
-const identityNim = document.querySelector<HTMLElement>('#identity-banner-nim')!;
 
 function setFieldError(field: HTMLElement, msg: string | null): void {
   const errorEl = field.parentElement?.querySelector<HTMLElement>('.field-error');
@@ -72,33 +71,30 @@ fileInput.addEventListener('change', () => {
   if (file) handleFileSelect(file);
 });
 
-function bootstrap(): void {
-  const identity = getIdentity();
-  if (!identity) {
-    // No identity → force re-entry through landing
-    toast('Isi nama & NIM kamu dulu di beranda ya.', 'error', 6000);
-    setTimeout(() => {
-      window.location.href = '/';
-    }, 1500);
-    return;
-  }
-  identityName.textContent = identity.name;
-  identityNim.textContent = identity.nim;
-  identityBanner.classList.remove('hidden');
-}
-
 form.addEventListener('submit', async e => {
   e.preventDefault();
   if (honeypot.value) return;
 
-  const identity = getIdentity();
-  if (!identity) {
-    window.location.href = '/';
-    return;
+  let ok = true;
+  const name = nameInput.value.trim();
+  const nim = nimInput.value.trim();
+  const igVal = igInput.value.trim();
+  const file = fileInput.files?.[0] ?? null;
+
+  if (name.length < 3) {
+    setFieldError(nameInput, 'Nama minimal 3 karakter.');
+    ok = false;
+  } else {
+    setFieldError(nameInput, null);
   }
 
-  let ok = true;
-  const igVal = igInput.value.trim();
+  if (!NIM_REGEX.test(nim)) {
+    setFieldError(nimInput, 'NIM harus 8–10 digit angka.');
+    ok = false;
+  } else {
+    setFieldError(nimInput, null);
+  }
+
   if (!IG_URL_REGEX.test(igVal)) {
     setFieldError(igInput, 'Link harus URL Instagram post/reel yang valid.');
     ok = false;
@@ -106,7 +102,6 @@ form.addEventListener('submit', async e => {
     setFieldError(igInput, null);
   }
 
-  const file = fileInput.files?.[0] ?? null;
   if (!file) {
     setFieldError(fileInput, 'Screenshot wajib di-upload.');
     ok = false;
@@ -137,7 +132,7 @@ form.addEventListener('submit', async e => {
 
   try {
     const ext = file!.name.split('.').pop() || 'jpg';
-    const path = `screenshots/${identity.nim}-${Date.now()}.${ext}`;
+    const path = `screenshots/${nim}-${Date.now()}.${ext}`;
     const { error: upErr } = await supabase.storage
       .from(STORAGE_BUCKET)
       .upload(path, file!, { contentType: file!.type, upsert: false });
@@ -145,7 +140,7 @@ form.addEventListener('submit', async e => {
 
     const { error: insErr } = await supabase
       .from('twibbon_posts')
-      .insert({ nim: identity.nim, ig_url: igVal, screenshot_path: path });
+      .insert({ nim, ig_url: igVal, screenshot_path: path });
     if (insErr) {
       await supabase.storage.from(STORAGE_BUCKET).remove([path]);
       if (insErr.code === '23505') {
@@ -163,5 +158,4 @@ form.addEventListener('submit', async e => {
   }
 });
 
-bootstrap();
 setupDropZone();

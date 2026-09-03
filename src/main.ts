@@ -3,27 +3,17 @@ import { marked } from 'marked';
 import { supabase, publicUrl } from './lib/supabase';
 import { toast, escapeHtml } from './lib/ui';
 import { buildWhatsAppUrl, shareOrCopy } from './lib/share';
-import { getIdentity, setIdentity } from './lib/identity';
 import { getCountdown, formatCountdown } from './lib/deadline';
 import type {
   TwibbonPost,
   TwibbonFile,
   TwibbonMember,
   SettingsMap,
-  Identity,
 } from './types';
 
 const PAGE_SIZE = 24;
 
-const NIM_REGEX = /^\d{8,10}$/;
-
 interface Els {
-  identityModal: HTMLElement;
-  identityForm: HTMLFormElement;
-  identityName: HTMLInputElement;
-  identityNim: HTMLInputElement;
-  identityChip: HTMLElement;
-  identityChipText: HTMLElement;
   eventTitle: HTMLElement;
   eventSubtitle: HTMLElement;
   terms: HTMLElement;
@@ -46,12 +36,6 @@ interface Els {
 }
 
 const els: Els = {
-  identityModal: document.querySelector<HTMLElement>('#identity-modal')!,
-  identityForm: document.querySelector<HTMLFormElement>('#identity-form')!,
-  identityName: document.querySelector<HTMLInputElement>('#identity-name')!,
-  identityNim: document.querySelector<HTMLInputElement>('#identity-nim')!,
-  identityChip: document.querySelector<HTMLElement>('#identity-chip')!,
-  identityChipText: document.querySelector<HTMLElement>('#identity-chip-text')!,
   eventTitle: document.querySelector<HTMLElement>('#event-title')!,
   eventSubtitle: document.querySelector<HTMLElement>('#event-subtitle')!,
   terms: document.querySelector<HTMLElement>('#terms-content')!,
@@ -76,53 +60,6 @@ const els: Els = {
 let allLoadedPosts: TwibbonPost[] = [];
 let renderedCount = 0;
 const settingsCache: Partial<SettingsMap> = {};
-
-function showIdentityModal(): void {
-  els.identityModal.classList.remove('hidden');
-  setTimeout(() => els.identityName.focus(), 100);
-}
-
-function hideIdentityModal(): void {
-  els.identityModal.classList.add('hidden');
-}
-
-function renderIdentityChip(identity: Identity): void {
-  els.identityChipText.textContent = `${identity.name.split(' ')[0]} · ${identity.nim}`;
-  els.identityChip.classList.remove('hidden');
-}
-
-function setFieldError(input: HTMLInputElement, msg: string | null): void {
-  const key = input.id === 'identity-name' ? 'identity-name' : 'identity-nim';
-  const errorEl = document.querySelector<HTMLElement>(`.field-error[data-for="${key}"]`);
-  if (errorEl) errorEl.textContent = msg ?? '';
-  if (msg) input.classList.add('border-red-500');
-  else input.classList.remove('border-red-500');
-}
-
-function handleIdentitySubmit(e: Event): void {
-  e.preventDefault();
-  const name = els.identityName.value.trim();
-  const nim = els.identityNim.value.trim();
-  let ok = true;
-  if (name.length < 3) {
-    setFieldError(els.identityName, 'Nama minimal 3 karakter.');
-    ok = false;
-  } else {
-    setFieldError(els.identityName, null);
-  }
-  if (!NIM_REGEX.test(nim)) {
-    setFieldError(els.identityNim, 'NIM harus 8–10 digit angka.');
-    ok = false;
-  } else {
-    setFieldError(els.identityNim, null);
-  }
-  if (!ok) return;
-  const identity: Identity = { name, nim };
-  setIdentity(identity);
-  renderIdentityChip(identity);
-  hideIdentityModal();
-  toast(`Halo ${name.split(' ')[0]}! 👋`, 'success', 3000);
-}
 
 async function loadSettings(): Promise<void> {
   const { data, error } = await supabase
@@ -255,23 +192,26 @@ function renderDeadline(): void {
 }
 
 async function loadMembers(): Promise<void> {
+  const list = els.membersGrid;
+  list.innerHTML = '<p class="text-gray-500">Loading...</p>';
   const { data, error } = await supabase
     .from('twibbon_members')
     .select('*')
     .order('group_number', { ascending: true })
     .order('position', { ascending: true });
   if (error) {
-    console.error('[loadMembers]', error);
-    els.membersGrid.innerHTML = '<p class="text-gray-500 italic">Gagal memuat daftar anggota.</p>';
+    list.innerHTML = `<p class="text-red-500">Error: ${escapeHtml(error.message)}</p>`;
     return;
   }
   if (!data || data.length === 0) {
-    els.membersGrid.innerHTML = '<p class="text-gray-500 italic col-span-full">Belum ada anggota terdaftar.</p>';
+    list.innerHTML = '<p class="text-gray-500 italic col-span-full">Belum ada anggota terdaftar.</p>';
     return;
   }
-  els.membersGrid.innerHTML = data
-    .map(
-      (m: TwibbonMember) => `
+  list.innerHTML =
+    `<p class="text-sm text-gray-500 mb-3">${data.length} anggota terdaftar.</p>` +
+    data
+      .map(
+        (m: TwibbonMember) => `
       <div class="member-card">
         <div class="member-num">${m.group_number ?? '?'}</div>
         <div class="flex-1 min-w-0">
@@ -280,8 +220,8 @@ async function loadMembers(): Promise<void> {
         </div>
       </div>
     `,
-    )
-    .join('');
+      )
+      .join('');
 }
 
 async function loadFeed(): Promise<void> {
@@ -383,21 +323,9 @@ function checkSubmittedFlag(): void {
   }
 }
 
-function bootstrapIdentity(): void {
-  const existing = getIdentity();
-  if (existing) {
-    renderIdentityChip(existing);
-    hideIdentityModal();
-  } else {
-    showIdentityModal();
-  }
-  els.identityForm.addEventListener('submit', handleIdentitySubmit);
-}
-
 async function main(): Promise<void> {
   setupMobileMenu();
   checkSubmittedFlag();
-  bootstrapIdentity();
   await Promise.all([
     loadSettings(),
     loadTerms(),

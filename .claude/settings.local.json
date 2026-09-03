@@ -32,7 +32,8 @@
       "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'fix: HIMTI typo + remove blue nav hover + HMTI favicon *)",
       "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'feat: add real HMTI & UMP logos + replace PT placeholder *)",
       "Bash(git -c user.email=\"kumpultwibbon@local\" -c user.name=\"panitia\" commit -m \"fix: admin navbar logo layout\")",
-      "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'fix: admin navbar - simplify logo layout *)"
+      "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'fix: admin navbar - simplify logo layout *)",
+      "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'refactor: remove identity modal + move name/NIM input to submit form *)"
     ]
   }
 }

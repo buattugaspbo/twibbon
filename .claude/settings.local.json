@@ -14,7 +14,16 @@
       "Bash(find \"C:\\\\Users\\\\bagas\" -maxdepth 4 -iname \"*hmti*\" -o -iname \"*ump*logo*\" -o -iname \"logo*ump*\" 2>/dev/null | head -20)",
       "Bash(git init *)",
       "Bash(git add *)",
-      "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'Initial commit: PKKMB TI UMP 2026 twibbon aggregator *)"
+      "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'Initial commit: PKKMB TI UMP 2026 twibbon aggregator *)",
+      "Bash(gh repo *)",
+      "Bash(git remote *)",
+      "Bash(git push *)",
+      "Bash(powershell -Command \"Expand-Archive -Path 'logonih.zip' -DestinationPath 'logonih-extracted' -Force\")",
+      "Bash(cp \"C:\\\\Users\\\\bagas\\\\Downloads\\\\logonih-extracted\\\\logonih\\\\download.webp\" \"C:\\\\Users\\\\bagas\\\\Downloads\\\\kumpultwibbon\\\\public\\\\logo-hmti.webp\")",
+      "Bash(cp \"C:\\\\Users\\\\bagas\\\\Downloads\\\\logonih-extracted\\\\logonih\\\\download1.webp\" \"C:\\\\Users\\\\bagas\\\\Downloads\\\\kumpultwibbon\\\\public\\\\logo-ump.webp\")",
+      "Bash(cp /c/Users/bagas/Downloads/logonih-extracted/logonih/download.webp /c/Users/bagas/Downloads/kumpultwibbon/public/logo-hmti.webp)",
+      "Bash(cp /c/Users/bagas/Downloads/logonih-extracted/logonih/download1.webp /c/Users/bagas/Downloads/kumpultwibbon/public/logo-ump.webp)",
+      "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'feat: add real HMTI & UMP logos + bazzcreate badge *)"
     ]
   }
 }

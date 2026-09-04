@@ -94,12 +94,12 @@ with check (true);
 
 -- Seed default settings (insert only if not exists)
 insert into twibbon_settings (key, value) values
-  ('event_title', 'PKKMB TI UMP 2026'),
-  ('event_subtitle', 'Fakultas Teknik – Teknologi Informasi'),
-  ('target_count', '66'),
-  ('video_url', 'https://www.youtube.com/embed/dQw4w9WgXcQ'),
-  ('deadline_at', '2026-12-31T23:59:00+07:00'),
-  ('deadline_label', 'Deadline Submit')
+  ('event_title', '"PKKMB TI UMP 2026"'),
+  ('event_subtitle', '"Fakultas Teknik – Teknologi Informasi"'),
+  ('target_count', '"66"'),
+  ('video_url', '"https://www.youtube.com/embed/dQw4w9WgXcQ"'),
+  ('deadline_at', '"2026-12-31T23:59:00+07:00"'),
+  ('deadline_label', '"Deadline Submit"')
 on conflict (key) do nothing;
 
 -- twibbon_posts (submissions)
@@ -179,7 +179,7 @@ with check (true);
 -- twibbon_terms (S&K)
 create table if not exists twibbon_terms (
   id bigint primary key default 1,
-  content text not null,
+  body_md text not null,
   updated_at timestamptz default now()
 );
 
@@ -200,7 +200,7 @@ using (true)
 with check (true);
 
 -- Seed default S&K
-insert into twibbon_terms (id, content) values (
+insert into twibbon_terms (id, body_md) values (
   1,
   E'# Syarat & Ketentuan\n\n1. Peserta adalah mahasiswa baru **Prodi Teknologi Informasi UMP 2026**\n2. Wajib menggunakan **bingkai twibbon resmi** yang disediakan\n3. Upload ke Instagram/TikTok dengan hashtag **#PKKMB_TI_UMP_2026**\n4. Screenshot post wajib jelas & tidak blur\n5. Satu NIM hanya boleh submit **satu kali**\n6. Submission yang melanggar akan **ditolak otomatis**\n\n**Kontak**: @hmti_ump (Instagram)'
 )

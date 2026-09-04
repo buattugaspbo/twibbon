@@ -48,7 +48,8 @@
       "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'fix: mobile overflow + max upload 10MB + CSS improvements *)",
       "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'feat: support TikTok URL validation \\(IG + TikTok\\) *)",
       "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'fix: mobile horizontal scroll - prevent geser kanan-kiri *)",
-      "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'fix: mobile text overflow + admin storage upload error *)"
+      "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'fix: mobile text overflow + admin storage upload error *)",
+      "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'feat: comprehensive SQL setup - safe untuk shared database *)"
     ]
   }
 }

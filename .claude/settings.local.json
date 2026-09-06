@@ -51,7 +51,8 @@
       "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'fix: mobile text overflow + admin storage upload error *)",
       "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'feat: comprehensive SQL setup - safe untuk shared database *)",
       "Bash(git -c user.email=\"kumpultwibbon@local\" -c user.name=\"panitia\" commit -m \"fix: SQL JSON values - wrap strings dengan double quotes\")",
-      "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'fix: SQL syntax errors \\(JSON values + column name body_md\\) *)"
+      "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'fix: SQL syntax errors \\(JSON values + column name body_md\\) *)",
+      "Bash(git -c user.email=kumpultwibbon@local -c user.name=panitia commit -m 'fix: hapus global deadline + fix anggota RLS untuk public update *)"
     ]
   }
 }
